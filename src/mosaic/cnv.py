@@ -91,11 +91,9 @@ class Cnv(_Assay):
             rc = self.get_attribute('read_counts', constraint='row')
             normal_rc = rc.loc[diploid_cells, :]
 
-            mean_cell_dp = rc.mean(axis=1)[:, None] + 1
-            mean_amplicon_dp = normal_rc.mean(axis=0)[None, :] + 1 # only consider normal cells
-
-            rc /= mean_cell_dp
-            rc /= mean_amplicon_dp
+            rc /= normal_rc.mean(axis=0) + 1
+            rc /= (np.array(rc.mean(axis=1))[:, np.newaxis]) + 1
+            rc *= 2
             normal_counts = rc.to_numpy()
 
         elif method == 'mb':
