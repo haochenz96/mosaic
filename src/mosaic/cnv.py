@@ -321,7 +321,7 @@ class Cnv(_Assay):
             order = self._get_amplicon_order() 
             ids = self.ids()[order]
             genes = self.col_attrs[GENE_NAME][order]
-            if len(features) > 1: # focus on particular genes
+            if isinstance(features, list) and len(features) > 1: # focus on particular genes
                 mask = np.isin(genes, features)
                 genes = genes[mask]
                 ids = ids[mask]
